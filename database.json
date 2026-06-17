@@ -1,0 +1,182 @@
+{
+  "kegiatan": [
+    {
+      "id": "activity-1",
+      "judul": "Ibadah Syukur Awal Tahun & Pembagian Perlengkapan Sekolah Baru",
+      "tanggal": "2026-01-05",
+      "foto": "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=800&auto=format&fit=crop&q=60",
+      "deskripsi": "Panti Asuhan Gelora Kasih mengadakan ibadah syukur menyambut tahun ajaran baru. Pada kesempatan ini, donatur tetap kami membagikan seragam, tas, buku tulis, dan perlengkapan sekolah lengkap kepada seluruh anak asuh. Acara ditutup dengan makan bersama dan doa berkat untuk kelancaran masa depan anak-anak."
+    },
+    {
+      "id": "activity-2",
+      "judul": "Kunjungan Kasih Komunitas Pemuda Kristen & Pelatihan Keterampilan Komputer",
+      "tanggal": "2026-03-22",
+      "foto": "https://images.unsplash.com/photo-1542810634-71277d95dcbb?w=800&auto=format&fit=crop&q=60",
+      "deskripsi": "Rekan-rekan dari Komunitas Pemuda GBI berkunjung untuk memberikan kelas kilat pengenalan komputer dan pemrograman dasar kepada anak-anak SMP dan SMA. Pelatihan digital ini bertujuan membekali anak-anak dengan keterampilan praktis teknologi agar siap bersaing di era digital."
+    },
+    {
+      "id": "activity-3",
+      "judul": "Pesta Sederhana Ulang Tahun Bersama Anak-Anak Panti",
+      "tanggal": "2026-05-18",
+      "foto": "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=800&auto=format&fit=crop&q=60",
+      "deskripsi": "Kehangatan dan tawa menyelimuti aula panti saat salah satu keluarga donatur datang untuk merayakan ulang tahun putra mereka bersama seluruh anak asuh. Acara diisi dengan bernyanyi lagu pujian bersama, kuis interaktif berhadiah, potong tumpeng, serta pembagian bingkisan kasih."
+    }
+  ],
+  "statistikAnak": {
+    "total": 68,
+    "lakiLaki": 50,
+    "perempuan": 18,
+    "belumSekolah": 0,
+    "sd": 12,
+    "smp": 13,
+    "sma": 9,
+    "kuliah": 3
+  },
+  "pengurus": [
+    {
+      "id": "pengurus-1",
+      "nama": "Pdt. John Sembiring, S.Th.",
+      "jabatan": "Ketua Yayasan & Pembina Rohani",
+      "foto": "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&auto=format&fit=crop&q=60"
+    },
+    {
+      "id": "pengurus-2",
+      "nama": "Grace Sembiring, S.Pd.",
+      "jabatan": "Sekretaris & Kepala Asrama",
+      "foto": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&auto=format&fit=crop&q=60"
+    },
+    {
+      "id": "pengurus-3",
+      "nama": "Yohanes Ginting, S.E.",
+      "jabatan": "Bendahara & Kepala Operasional",
+      "foto": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&auto=format&fit=crop&q=60"
+    }
+  ],
+  "rekeningDonasi": [
+    {
+      "id": "rec-1",
+      "bankName": "BANK BNI",
+      "accountName": "PAK GELORA KASIH GBKP",
+      "accountNumber": "0061574372"
+    },
+    {
+      "id": "rec-2",
+      "bankName": "BANK BRI",
+      "accountName": "PANTI ASUHAN GELORA KASIH",
+      "accountNumber": "527001000807531"
+    }
+  ],
+  "profilYayasan": {
+    "sejarah": "Yayasan Panti Asuhan Kristen (YPAK) GBKP Gelora Kasih adalah saksi sejarah tumbuhnya Benih kasih Surgawi yang di taburkan oleh utusan-utusan Zendling NZG ke lubuk hati masyarakat Karo sejak 18 April 1890, mulai di Dusun Buluh Awar",
+    "visi": "Terbentuknya Anak yang Berkarakter Kasih Kristus",
+    "misi": [
+      "Melaksanakan Kasih Kristus terhadap anak Yatim Piatu dan terlantar melalui:",
+      "1. Menerapkan Pola arah anak Kasih tanpa kekerasan (Fisik dan Non Fisik)",
+      "2. Menciptakan lingkungan Panti Asuhan yang ramag anak dan layak huni"
+    ],
+    "alamat": "Komplek Taman Jubelium 100 tahun GBKP Jalan Jamin Ginting Km. 45, Desa Sukamakmur, Kecamatan Sibolangit, Kabupaten Deli Serdang, Sumatera Utara Kode Pos: 20357",
+    "telepon": "0811 6166 1963",
+    "email": "Yayasangelorakasih1963@gmail.com",
+    "mapsIframe": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4963.535302682483!2d98.55407369999999!3d3.2815809999999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30311c14b52b3141%3A0x117fec6584466762!2sPanti%20Asuhan%20Gelora%20Kasih!5e1!3m2!1sen!2sid!4v1781676371787!5m2!1sen!2sid\" width=\"600\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade",
+    "facebookUrl": "https://facebook.com/PantiAsuhanGeloraKasih",
+    "instagramUrl": "https://instagram.com/panti.gelorakasih",
+    "youtubeUrl": "https://youtube.com/c/PantiAsuhanGeloraKasih",
+    "logoUrl": "",
+    "heroBadge": "Membangun Harapan Baru — Berasaskan Kasih",
+    "heroTitle": "Wujudkan Masa Depan Cerah bagi Anak Bangsa",
+    "heroDescription": "Selamat datang di Yayasan Panti Asuhan Kristen Gelora Kasih. Memberikan perlindungan, pendidikan, asrama sehat, dan kasih sayang yang berpusat pada nilai-nilai Kristiani bagi anak-anak yang membutuhkan.",
+    "heroBgUrl": "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=1600&auto=format&fit=crop&q=80",
+    "donasiLogistikTitle": "Donasi Paket Logistik Sembako & Pakaian",
+    "donasiLogistikSubtitle": "Selain tunai, anak-anak asuh membutuhkan bantuan logistik harian seperti:",
+    "donasiLogistikItems": [
+      "Sembako (Beras, Minyak Goreng, Gula, Susu, Mie Instan, dll).",
+      "Pakaian ganti harian (anak umur 4 s.d. 18 tahun) yang masih layak pakai.",
+      "Suku cadang peralatan kebersihan asrama, sabun, odol, detergen.",
+      "Buku bacaan rohani Kristen, novel edukatif, atau perlengkapan melukis/musik."
+    ],
+    "donasiLogistikShipping": "Barang dapat langsung dikirimkan lewat kurir (J&T, JNE, POS) atau diantar langsung ke alamat panti asuhan Kristen Gelora Kasih di Sibolangit."
+  },
+  "admins": {
+    "admin": {
+      "user": {
+        "id": "admin-root",
+        "username": "admin",
+        "name": "Pengurus Inti Gelora Kasih",
+        "role": "Super Admin"
+      },
+      "passwordHash": "kasihgelora"
+    }
+  },
+  "history": [
+    {
+      "id": "log-nzw41ighjc-1781680005341",
+      "timestamp": "2026-06-17T07:06:45.341Z",
+      "adminName": "Pengurus Inti Gelora Kasih",
+      "deskripsiAktivitas": "Memperbarui rekening donasi: BANK BRI"
+    },
+    {
+      "id": "log-x9l2uamuyd-1781679975239",
+      "timestamp": "2026-06-17T07:06:15.239Z",
+      "adminName": "Pengurus Inti Gelora Kasih",
+      "deskripsiAktivitas": "Memperbarui rekening donasi: BANK BNI"
+    },
+    {
+      "id": "log-2obhn3spi2q-1781679908930",
+      "timestamp": "2026-06-17T07:05:08.930Z",
+      "adminName": "Pengurus Inti Gelora Kasih",
+      "deskripsiAktivitas": "Menyunting dan memperbarui detail Profil & Kontak Yayasan."
+    },
+    {
+      "id": "log-ilx0nejvlpm-1781679905876",
+      "timestamp": "2026-06-17T07:05:05.876Z",
+      "adminName": "Pengurus Inti Gelora Kasih",
+      "deskripsiAktivitas": "Menyunting dan memperbarui detail Profil & Kontak Yayasan."
+    },
+    {
+      "id": "log-nozqs9zygyk-1781679842830",
+      "timestamp": "2026-06-17T07:04:02.830Z",
+      "adminName": "Pengurus Inti Gelora Kasih",
+      "deskripsiAktivitas": "Menyunting dan memperbarui detail Profil & Kontak Yayasan."
+    },
+    {
+      "id": "log-8i2ohjygoen-1781679279418",
+      "timestamp": "2026-06-17T06:54:39.418Z",
+      "adminName": "Pengurus Inti Gelora Kasih",
+      "deskripsiAktivitas": "Memperbarui statistik anak asuh: Total 68 anak"
+    },
+    {
+      "id": "log-d1xgq2wf41-1781674192033",
+      "timestamp": "2026-06-17T05:29:52.033Z",
+      "adminName": "Pengurus Inti Gelora Kasih",
+      "deskripsiAktivitas": "Menyunting dan memperbarui detail Profil & Kontak Yayasan."
+    },
+    {
+      "id": "log-qhnib6rbjj-1781673777413",
+      "timestamp": "2026-06-17T05:22:57.413Z",
+      "adminName": "Pengurus Inti Gelora Kasih",
+      "deskripsiAktivitas": "Memperbarui statistik anak asuh: Total 35 anak"
+    },
+    {
+      "id": "hist-1",
+      "timestamp": "2026-06-16T12:00:00Z",
+      "adminName": "Sistem",
+      "deskripsiAktivitas": "Sistem database diinisialisasi untuk Yayasan Panti Asuhan Kristen Gelora Kasih."
+    }
+  ],
+  "ulasan": [
+    {
+      "id": "rev-1",
+      "authorName": "Budi Santoso",
+      "rating": 5,
+      "comment": "Sangat diberkati melihat pelayanan tulus pengurus di Gelora Kasih. Anak-anak asuh nampak ceria, mandiri, dan asrama terjaga sangat bersih.",
+      "createdAt": "2026-06-16T08:30:00.000Z"
+    },
+    {
+      "id": "rev-2",
+      "authorName": "Irene Sitorus",
+      "rating": 5,
+      "comment": "Kami berkunjung membawa sembako minggu lalu. Manajemen asrama sangat profesional dan terbuka dalam mengelola bantuan kasih. Recommended!",
+      "createdAt": "2026-06-16T15:45:00.000Z"
+    }
+  ]
+}
