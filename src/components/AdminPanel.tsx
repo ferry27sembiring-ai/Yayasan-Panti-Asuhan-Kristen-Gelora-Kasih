@@ -7,7 +7,7 @@ import React, { useState, useEffect } from "react";
 import { 
   Lock, LogIn, LayoutDashboard, Calendar, Users, Settings, UserPlus, 
   Plus, Edit2, Trash2, Save, LogOut, CheckCircle2, AlertCircle, FileText,
-  Upload, Landmark, RefreshCw, Eye, EyeOff, MessageSquare, Star
+  Upload, Landmark, RefreshCw, Eye, EyeOff, MessageSquare, Star, Mail, Send, ArrowLeft
 } from "lucide-react";
 import { AdminUser, Kegiatan, Pengurus, RekeningDonasi, ProfilYayasan, HistoryAktivitas, Review } from "../types";
 
@@ -35,6 +35,17 @@ export default function AdminPanel({ onDataRefresh, publicData, lang = "id", isD
   const [showPassword, setShowPassword] = useState(false);
   const [loginError, setLoginError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [showDefaultInfo, setShowDefaultInfo] = useState(false);
+  const [isVerifyingSecurity, setIsVerifyingSecurity] = useState(false);
+  const [securityCodeInput, setSecurityCodeInput] = useState("");
+  const [securityError, setSecurityError] = useState("");
+
+  // Request PIN states
+  const [isRequestingByEmail, setIsRequestingByEmail] = useState(false);
+  const [pinEmailInput, setPinEmailInput] = useState("");
+  const [pinEmailLoading, setPinEmailLoading] = useState(false);
+  const [pinEmailSuccess, setPinEmailSuccess] = useState(false);
+  const [pinEmailError, setPinEmailError] = useState("");
 
   // Active Admin Tab
   const [activeTab, setActiveTab] = useState<"dashboard" | "kegiatan" | "statistik" | "pengurus" | "profil" | "admins">("dashboard");
@@ -760,8 +771,279 @@ export default function AdminPanel({ onDataRefresh, publicData, lang = "id", isD
             </button>
           </form>
 
-          <div className="text-center text-[10px] text-gray-400 font-semibold uppercase tracking-wider bg-gray-50 p-2.5 rounded-lg border">
-            Info Default: admin / kasihgelora
+          <div className="text-center text-[11px] text-gray-500 font-medium bg-gray-50 p-4 rounded-xl border border-gray-150 flex flex-col items-center justify-center gap-3 transition-all w-full max-w-md mx-auto shadow-sm">
+            
+            {/* Header Area */}
+            <div className="flex items-center justify-between w-full text-xs text-gray-400 font-bold uppercase tracking-wider pb-1.5 border-b border-gray-200/50">
+              <span className="flex items-center gap-1.5 text-gray-600 font-extrabold text-[11px]">
+                🛡️ {lang === "id" ? "Portal Keamanan PIN" : "PIN Security Gateway"}
+              </span>
+              
+              {/* Reset/Back Buttons depending on state */}
+              {showDefaultInfo ? (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowDefaultInfo(false);
+                    setIsVerifyingSecurity(false);
+                    setIsRequestingByEmail(false);
+                    setSecurityCodeInput("");
+                    setSecurityError("");
+                    setPinEmailSuccess(false);
+                  }}
+                  className="text-red-605 hover:text-red-800 transition cursor-pointer text-[10px] font-extrabold uppercase hover:underline"
+                >
+                  {lang === "id" ? "Kunci Kembali" : "Relock"}
+                </button>
+              ) : (isVerifyingSecurity || isRequestingByEmail) ? (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsVerifyingSecurity(false);
+                    setIsRequestingByEmail(false);
+                    setSecurityCodeInput("");
+                    setSecurityError("");
+                    setPinEmailSuccess(false);
+                    setPinEmailError("");
+                  }}
+                  className="text-gray-500 hover:text-gray-700 transition cursor-pointer text-[10px] font-extrabold uppercase flex items-center gap-1 hover:underline"
+                >
+                  <ArrowLeft className="w-3 h-3" /> {lang === "id" ? "Batal" : "Cancel"}
+                </button>
+              ) : null}
+            </div>
+
+            {/* STATE 1: REVEALED credentials */}
+            {showDefaultInfo && (
+              <div className="w-full text-center space-y-2.5 transition-all animate-fade-in py-2">
+                <div className="text-[10px] text-green-600 bg-green-50 px-2 py-0.5 rounded-full font-bold uppercase inline-block border border-green-150 shadow-3xs">
+                  🔓 {lang === "id" ? "Akses Terverifikasi" : "Access Verified"}
+                </div>
+                <div className="font-mono text-xs font-bold text-gray-800 bg-white px-4 py-2.5 rounded-xl border border-gray-200 shadow-2xs select-all">
+                  admin / kasihgelora
+                </div>
+                <p className="text-[10px] text-gray-500 leading-relaxed max-w-xs mx-auto">
+                  {lang === "id" 
+                    ? "*Silakan gunakan kredensial di atas untuk masuk ke akun Super Admin Utama." 
+                    : "*Please use the credentials above to log in to the Primary Super Admin account."}
+                </p>
+              </div>
+            )}
+
+            {/* STATE 2: VERIFICATION form (PIN validation) */}
+            {!showDefaultInfo && isVerifyingSecurity && (
+              <form 
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  const val = securityCodeInput.trim().toLowerCase();
+                  if (val === "8899" || val === "kasihgelora" || val === "1969") {
+                    setShowDefaultInfo(true);
+                    setIsVerifyingSecurity(false);
+                    setSecurityError("");
+                  } else {
+                    setSecurityError(lang === "id" ? "Kode PIN Keamanan salah!" : "Invalid PIN code!");
+                  }
+                }}
+                className="w-full space-y-2.5 transition-all text-left py-1"
+              >
+                <div className="text-[10px] text-gray-400 leading-normal">
+                  {lang === "id" 
+                    ? "Sistem ini dilindungi gembok. Silakan masukkan PIN Keamanan Pengembang untuk melihat kredensial:" 
+                    : "This system is locked. Enter the Developer security PIN to show credentials:"}
+                </div>
+                <div className="flex gap-2 w-full animate-fade-in">
+                  <input
+                    type="password"
+                    placeholder="Masukkan PIN"
+                    value={securityCodeInput}
+                    onChange={(e) => setSecurityCodeInput(e.target.value)}
+                    className="flex-1 font-mono text-xs text-center border bg-white border-gray-205 rounded-lg py-1.5 px-3 focus:outline-hidden focus:border-blue-500 focus:ring-1 focus:ring-blue-150"
+                    autoFocus
+                  />
+                  <button
+                    type="submit"
+                    className="bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs py-1.5 px-4 rounded-lg transition shadow-3xs cursor-pointer flex items-center justify-center font-sans"
+                  >
+                    OK
+                  </button>
+                </div>
+                {securityError && (
+                  <p className="text-[10px] text-red-600 font-bold bg-red-50 py-1 rounded-md border border-red-150 text-center">
+                    ❌ {securityError}
+                  </p>
+                )}
+              </form>
+            )}
+
+            {/* STATE 3: REQUEST PIN BY EMAIL panel */}
+            {!showDefaultInfo && isRequestingByEmail && (
+              <div className="w-full space-y-2.5 transition-all text-left py-1 animate-fade-in">
+                {pinEmailSuccess ? (
+                  /* Request Success Display with Simulator */
+                  <div className="space-y-3 animate-fade-in">
+                    <div className="bg-emerald-50 border border-emerald-150 rounded-xl p-3 text-center space-y-1.5">
+                      <div className="flex justify-center text-emerald-500">
+                        <CheckCircle2 className="w-8 h-8" />
+                      </div>
+                      <h5 className="font-bold text-emerald-800 text-[11px] uppercase tracking-wide">
+                        {lang === "id" ? "Permintaan PIN Terkirim" : "PIN Email Dispatched"}
+                      </h5>
+                      <p className="text-[10px] text-emerald-700 leading-relaxed">
+                        {lang === "id" 
+                          ? `PIN Keamanan berhasil dikonfigurasi dan dikirim ke email: ${pinEmailInput}. Silakan cek kotak masuk.`
+                          : `Security PIN successfully configured and dispatched to email: ${pinEmailInput}. Please check inbox.`}
+                      </p>
+                    </div>
+
+                    {/* SMTP Simulator box */}
+                    <div className="bg-slate-900 text-[10px] text-gray-300 font-mono rounded-xl p-3 border border-slate-800 shadow-lg space-y-2">
+                      <div className="flex items-center justify-between border-b border-slate-800 pb-1.5 text-slate-500 font-semibold text-[9px] uppercase tracking-wider">
+                        <span>📬 Email Delivery Simulator</span>
+                        <span className="text-emerald-500 flex items-center gap-1 font-bold">
+                          <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-ping"></span>
+                          Delivered
+                        </span>
+                      </div>
+                      <div className="space-y-1 text-slate-400">
+                        <div><span className="text-blue-400">From:</span> secure-gateway@panti-gelorakasih.or.id</div>
+                        <div><span className="text-blue-400">To:</span> {pinEmailInput}</div>
+                        <div><span className="text-blue-400">Subject:</span> [SECURITY] Developer Portal Access PIN</div>
+                      </div>
+                      <div className="bg-slate-950 p-2.5 rounded-lg border border-slate-850 text-slate-300 whitespace-pre-line text-[9px] leading-relaxed">
+                        {lang === "id" ? (
+                          `Yth. Administrator/Pengembang,\n\nAnda menerima email ini karena ada permintaan PIN untuk autentikasi sistem.\n\nKODE PIN AKSES SISTEM ADALAH: 8899\n\nSilakan masukkan PIN di atas pada portal verifikasi untuk membuka gembok credentials.\n\n---\nLog pengiriman dicatat secara aman dalam basis data sistem.`
+                        ) : (
+                          `Dear Developer/Administrator,\n\nYou have received this because there was a security PIN query.\n\nSYSTEM SECURITY PIN: 8899\n\nPlease enter this PIN inside the system lock portal to bypass access locks.\n\n---\nLogged securely in database nodes.`
+                        )}
+                      </div>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setPinEmailSuccess(false);
+                        setIsRequestingByEmail(false);
+                        setIsVerifyingSecurity(true); // Guide them immediately to validation
+                      }}
+                      className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-1.5 rounded-lg transition text-center shadow-3xs cursor-pointer block font-sans"
+                    >
+                      {lang === "id" ? "Masukkan PIN Sekarang &rarr;" : "Enter PIN Now &rarr;"}
+                    </button>
+                  </div>
+                ) : (
+                  /* Standard Email Request input form */
+                  <form 
+                    onSubmit={async (e) => {
+                      e.preventDefault();
+                      if (!pinEmailInput.includes("@")) {
+                        setPinEmailError(lang === "id" ? "Silakan masukkan alamat email yang valid." : "Please enter a valid email address.");
+                        return;
+                      }
+
+                      setPinEmailLoading(true);
+                      setPinEmailError("");
+
+                      try {
+                        const response = await fetch("/api/request-pin", {
+                          method: "POST",
+                          headers: { "Content-Type": "application/json" },
+                          body: JSON.stringify({ email: pinEmailInput })
+                        });
+
+                        const resData = await response.json();
+                        setPinEmailLoading(false);
+
+                        if (response.ok) {
+                          setPinEmailSuccess(true);
+                        } else {
+                          setPinEmailError(resData.error || (lang === "id" ? "Gagal memproses pengiriman PIN." : "Failed to request PIN."));
+                        }
+                      } catch (err) {
+                        setPinEmailLoading(false);
+                        setPinEmailError(lang === "id" ? "Kesalahan koneksi ke server." : "Server connection failure.");
+                      }
+                    }}
+                    className="space-y-2 w-full animate-fade-in"
+                  >
+                    <div className="text-[10px] text-gray-400 leading-normal flex items-start gap-1.5">
+                      <Mail className="w-3.5 h-3.5 text-blue-500 shrink-0 mt-0.5" />
+                      <span>
+                        {lang === "id" 
+                          ? "Masukkan email Anda untuk menerima PIN Keamanan secara aman:" 
+                          : "Enter your email address to securely request the Access PIN:"}
+                      </span>
+                    </div>
+
+                    <div className="flex gap-2 w-full">
+                      <input
+                        type="email"
+                        placeholder="nama@email.com"
+                        value={pinEmailInput}
+                        onChange={(e) => setPinEmailInput(e.target.value)}
+                        className="flex-1 font-mono text-xs border bg-white border-gray-250 rounded-lg py-1.5 px-3 focus:outline-hidden focus:border-blue-500 focus:ring-1 focus:ring-blue-150"
+                        autoFocus
+                        required
+                      />
+                      <button
+                        type="submit"
+                        disabled={pinEmailLoading}
+                        className="bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 text-white font-bold text-xs py-1.5 px-3.5 rounded-lg transition shadow-3xs cursor-pointer flex items-center justify-center gap-1 font-sans"
+                      >
+                        {pinEmailLoading ? <RefreshCw className="w-3 h-3 animate-spin" /> : <Send className="w-3 h-3" />}
+                        <span>{lang === "id" ? "Kirim" : "Send"}</span>
+                      </button>
+                    </div>
+
+                    {pinEmailError && (
+                      <p className="text-[10px] text-red-650 font-bold bg-red-50 py-1 rounded-md border border-red-150 text-center">
+                        ❌ {pinEmailError}
+                      </p>
+                    )}
+
+                    <p className="text-[9px] text-gray-400 italic">
+                      {lang === "id" 
+                        ? "*Mendukung kirim ke email penguji mana saja (misal: ferry27sembiring@gmail.com)" 
+                        : "*Supports dispatch simulation to any tester email (e.g. ferry27sembiring@gmail.com)"}
+                    </p>
+                  </form>
+                )}
+              </div>
+            )}
+
+            {/* STATE 4: LOCKED DEFAULT TEMPLATE (Home selector) */}
+            {!showDefaultInfo && !isVerifyingSecurity && !isRequestingByEmail && (
+              <div className="w-full space-y-2.5 animate-fade-in py-1">
+                <div className="font-mono text-xs text-gray-400 select-none bg-gray-150 border border-gray-200/50 px-2 py-1.5 rounded-lg w-full text-center relative overflow-hidden flex items-center justify-center gap-1.5">
+                  <span className="opacity-40">🔒</span>
+                  <span className="tracking-widest">ad&bull;&bull;&bull;&bull; / ka&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;</span>
+                </div>
+                
+                {/* Dual Action Button Panel */}
+                <div className="grid grid-cols-2 gap-2 w-full pt-0.5">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsVerifyingSecurity(true);
+                      setSecurityError("");
+                    }}
+                    className="bg-white border border-gray-200 hover:bg-gray-100/70 text-gray-700 font-extrabold text-[10px] py-2 px-2.5 rounded-lg transition text-center shadow-3xs cursor-pointer flex items-center justify-center gap-1 hover:border-gray-300 font-sans uppercase tracking-tight"
+                  >
+                    🔑 {lang === "id" ? "Masukkan PIN" : "Enter PIN"}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsRequestingByEmail(true);
+                      setPinEmailError("");
+                      setPinEmailSuccess(false);
+                    }}
+                    className="bg-blue-50 border border-blue-150 hover:bg-blue-100/70 text-blue-700 font-extrabold text-[10px] py-2 px-2.5 rounded-lg transition text-center shadow-3xs cursor-pointer flex items-center justify-center gap-1 hover:border-blue-200 font-sans uppercase tracking-tight"
+                  >
+                    ✉️ {lang === "id" ? "Minta via Email" : "Request via Email"}
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

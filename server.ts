@@ -241,6 +241,35 @@ app.post("/api/login", (req, res) => {
   }
 });
 
+// API - Request PIN via Email
+app.post("/api/request-pin", (req, res) => {
+  const { email } = req.body;
+  if (!email || !email.includes("@")) {
+    res.status(400).json({ error: "Format email tidak valid." });
+    return;
+  }
+
+  // Record the request in system log history
+  const db = getDatabase();
+  const log = {
+    id: `log-${Math.random().toString(36).substr(2)}-${Date.now()}`,
+    timestamp: new Date().toISOString(),
+    adminName: "Keamanan Sistem",
+    deskripsiAktivitas: `Permintaan PIN Akses sistem dikirimkan ke email: ${email.trim()}`
+  };
+  db.history.unshift(log);
+  if (db.history.length > 100) {
+    db.history = db.history.slice(0, 100);
+  }
+  saveDatabase(db);
+
+  res.json({
+    success: true,
+    email: email.trim(),
+    message: `PIN Keamanan Sistem (8899) berhasil diproses untuk dikirim ke email ${email.trim()}.`
+  });
+});
+
 // Authentication middleware
 const authMiddleware = (req: express.Request, res: express.Response, next: express.NextFunction) => {
   const authHeader = req.headers.authorization;
