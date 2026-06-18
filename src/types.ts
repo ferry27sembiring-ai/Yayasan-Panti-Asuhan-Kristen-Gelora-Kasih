@@ -6,9 +6,11 @@
 export interface Kegiatan {
   id: string;
   judul: string;
+  judulEn?: string;
   tanggal: string;
   foto: string;
   deskripsi: string;
+  deskripsiEn?: string;
 }
 
 export interface StatistikAnak {

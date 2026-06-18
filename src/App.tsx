@@ -7,7 +7,8 @@ import React, { useState, useEffect } from "react";
 import { motion } from "motion/react";
 import { 
   Heart, Menu, X, Landmark, Compass, Calendar, Phone, Mail, 
-  MapPin, ShieldAlert, Facebook, Instagram, Youtube, Sparkles
+  MapPin, ShieldAlert, Facebook, Instagram, Youtube, Sparkles,
+  Globe, Sun, Moon
 } from "lucide-react";
 import { Kegiatan, StatistikAnak, Pengurus, RekeningDonasi, ProfilYayasan, Review, getWhatsAppUrl } from "./types";
 
@@ -60,6 +61,38 @@ const defaultProfil: ProfilYayasan = {
 export default function App() {
   const [currentTab, setCurrentTab] = useState<string>("home");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  // Translation & Dark Theme States
+  const [lang, setLang] = useState<"id" | "en">((): "id" | "en" => {
+    if (typeof window !== "undefined") {
+      const stored = localStorage.getItem("lang");
+      if (stored === "en" || stored === "id") return stored;
+    }
+    return "id";
+  });
+
+  const [isDark, setIsDark] = useState<boolean>((): boolean => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("theme") === "dark";
+    }
+    return false;
+  });
+
+  // Sync translation lang selection
+  useEffect(() => {
+    localStorage.setItem("lang", lang);
+  }, [lang]);
+
+  // Sync dark theme class on document element
+  useEffect(() => {
+    if (isDark) {
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
+    }
+  }, [isDark]);
 
   // States synchronized with Backend CMS database.json
   const [activities, setActivities] = useState<Kegiatan[]>([]);
@@ -116,7 +149,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col font-sans text-gray-800 antialiased selection:bg-blue-100 selection:text-blue-900">
+    <div className={`min-h-screen ${isDark ? "dark bg-slate-950 text-slate-100" : "bg-slate-50 text-gray-800"} flex flex-col font-sans antialiased selection:bg-blue-105 selection:text-blue-900 transition-colors duration-300`}>
       
       {/* Dynamic Loading Header */}
       {isDataLoading && (
@@ -125,12 +158,12 @@ export default function App() {
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
           </svg>
-          Menghubungkan ke Pusat Data Gelora Kasih Sibolangit...
+          {lang === "id" ? "Menghubungkan ke Pusat Data Gelora Kasih Sibolangit..." : "Synching with Gelora Kasih centralized data nodes..."}
         </div>
       )}
 
       {/* Top Main Navigation Header */}
-      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-blue-100 py-4 px-6 md:px-12 flex justify-between items-center shadow-sm">
+      <header className="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-blue-105 dark:border-slate-800 py-4 px-6 md:px-12 flex justify-between items-center shadow-sm transition-colors duration-300">
         
         {/* Brand Logo Identity */}
         <div 
@@ -151,54 +184,78 @@ export default function App() {
             </div>
           )}
           <div>
-            <h1 className="text-sm md:text-base font-bold leading-none text-blue-900 tracking-tight">
+            <h1 className="text-sm md:text-base font-bold leading-none text-blue-900 dark:text-white tracking-tight">
               Gelora Kasih
             </h1>
-            <span className="text-[10px] tracking-widest uppercase font-semibold text-amber-600 block mt-1">
-              Yayasan Panti Asuhan Kristen
+            <span className="text-[10px] tracking-widest uppercase font-semibold text-amber-600 dark:text-amber-450 block mt-1">
+              {lang === "id" ? "Yayasan Panti Asuhan Kristen" : "Christian Orphanage Foundation"}
             </span>
           </div>
         </div>
 
         {/* Desktop Web Navigation bar */}
-        <nav className="hidden md:flex items-center gap-8 text-xs font-semibold tracking-wider text-slate-500 uppercase">
+        <nav className="hidden md:flex items-center gap-8 text-xs font-semibold tracking-wider text-slate-500 dark:text-gray-400 uppercase">
           <button
             onClick={() => handleTabNavigation("home")}
-            className={`transition cursor-pointer ${currentTab === "home" ? "text-blue-600 border-b-2 border-blue-600 px-1 pb-1" : "hover:text-blue-600"}`}
+            className={`transition cursor-pointer ${currentTab === "home" ? "text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 px-1 pb-1 font-bold" : "hover:text-blue-600 dark:hover:text-blue-400"}`}
           >
-            Beranda
+            {lang === "id" ? "Beranda" : "Home"}
           </button>
           
           <button
             onClick={() => handleTabNavigation("tentang")}
-            className={`transition cursor-pointer ${currentTab === "tentang" ? "text-blue-600 border-b-2 border-blue-600 px-1 pb-1" : "hover:text-blue-600"}`}
+            className={`transition cursor-pointer ${currentTab === "tentang" ? "text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 px-1 pb-1 font-bold" : "hover:text-blue-600 dark:hover:text-blue-400"}`}
           >
-            Tentang Kami
+            {lang === "id" ? "Tentang Kami" : "About Us"}
           </button>
 
           <button
             onClick={() => handleTabNavigation("kegiatan")}
-            className={`transition cursor-pointer ${currentTab === "kegiatan" ? "text-blue-600 border-b-2 border-blue-600 px-1 pb-1" : "hover:text-blue-600"}`}
+            className={`transition cursor-pointer ${currentTab === "kegiatan" ? "text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 px-1 pb-1 font-bold" : "hover:text-blue-600 dark:hover:text-blue-400"}`}
           >
-            Kegiatan
+            {lang === "id" ? "Kegiatan" : "Activities"}
           </button>
 
           <button
             onClick={() => handleTabNavigation("kontak")}
-            className={`transition cursor-pointer ${currentTab === "kontak" ? "text-blue-600 border-b-2 border-blue-600 px-1 pb-1" : "hover:text-blue-600"}`}
+            className={`transition cursor-pointer ${currentTab === "kontak" ? "text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 px-1 pb-1 font-bold" : "hover:text-blue-600 dark:hover:text-blue-400"}`}
           >
-            Kontak & Donasi
+            {lang === "id" ? "Kontak & Donasi" : "Contact & Support"}
           </button>
         </nav>
 
-        {/* Desktop Admin Portal Trigger */}
+        {/* Desktop Controls (Translation, Theme, Portal) */}
         <div className="hidden md:flex items-center gap-4">
+          
+          {/* Translation Button Selector */}
+          <button
+            onClick={() => setLang(lang === "id" ? "en" : "id")}
+            className="flex items-center gap-1.5 px-3 py-1.5 border border-gray-200 dark:border-slate-800 rounded-full hover:bg-gray-100 dark:hover:bg-slate-800 text-xs font-bold transition text-gray-700 dark:text-gray-300 cursor-pointer shadow-xs"
+            title={lang === "id" ? "Switch to English" : "Ubah ke Bahasa Indonesia"}
+          >
+            <Globe className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400 animate-pulse" />
+            <span>{lang === "id" ? "EN / ID" : "ID / EN"}</span>
+          </button>
+
+          {/* Dark Theme toggle */}
+          <button
+            onClick={() => setIsDark(!isDark)}
+            className="p-2 border border-gray-200 dark:border-slate-800 rounded-full hover:bg-gray-100 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-350 transition cursor-pointer shadow-xs"
+            title={isDark ? "Mode Terang" : "Mode Gelap"}
+          >
+            {isDark ? (
+              <Sun className="w-4 h-4 text-amber-500 fill-amber-500/20" />
+            ) : (
+              <Moon className="w-4 h-4 text-slate-600" />
+            )}
+          </button>
+
           <button
             onClick={() => handleTabNavigation("kontak")}
-            className="px-5 py-2 bg-amber-50 hover:bg-amber-100 text-amber-700 hover:text-amber-800 rounded-full text-xs font-bold shadow-sm transition-all cursor-pointer inline-flex items-center gap-1.5"
+            className="px-5 py-2 bg-amber-50 dark:bg-amber-950/20 hover:bg-amber-100 dark:hover:bg-amber-955/35 text-amber-700 dark:text-amber-400 rounded-full text-xs font-bold shadow-sm transition-all cursor-pointer inline-flex items-center gap-1.5"
           >
-            <Heart className="w-3.5 h-3.5 fill-current" />
-            DONASI SEKARANG
+            <Heart className="w-3.5 h-3.5 fill-current text-rose-500 animate-pulse" />
+            {lang === "id" ? "DONASI" : "DONATE"}
           </button>
           
           <button
@@ -206,7 +263,7 @@ export default function App() {
             className={`w-8 h-8 rounded-full flex items-center justify-center border transition-all cursor-pointer ${
               currentTab === "admin"
                 ? "bg-blue-600 text-white border-blue-600"
-                : "bg-blue-50 text-blue-600 border-blue-100 hover:bg-blue-100"
+                : "bg-blue-50 dark:bg-slate-800 text-blue-600 dark:text-blue-400 border-blue-105 dark:border-slate-700 hover:bg-blue-100 dark:hover:bg-slate-750"
             }`}
             title="Portal Administrator"
           >
@@ -214,57 +271,79 @@ export default function App() {
           </button>
         </div>
 
-        {/* Mobile menu Toggle Hamburger button */}
-        <button
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className="md:hidden p-2 text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-lg cursor-pointer animate-pulse-once"
-        >
-          {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-        </button>
+        {/* Mobile menu Toggle Hamburger button (or state triggers) */}
+        <div className="flex md:hidden items-center gap-2">
+          {/* Mobile Theme Toggle Button */}
+          <button
+            onClick={() => setIsDark(!isDark)}
+            className="p-2 border border-gray-200 dark:border-slate-800 rounded-full bg-white dark:bg-slate-900 text-gray-700 dark:text-gray-300 shadow-xs"
+          >
+            {isDark ? <Sun className="w-4 h-4 text-amber-500" /> : <Moon className="w-4 h-4 text-slate-500" />}
+          </button>
+
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="p-2 text-gray-700 dark:text-white hover:text-blue-600 hover:bg-gray-50 dark:hover:bg-slate-800 rounded-lg cursor-pointer"
+          >
+            {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
+        </div>
       </header>
 
-      {/* Mobile Sidebar Dropdown menu */}
+      {/* Mobile Sidebar Dropdown menu with settings */}
       {isMobileMenuOpen && (
-        <div className="md:hidden bg-white border-b border-blue-50 px-6 py-4 flex flex-col gap-4 text-xs font-bold tracking-wider text-gray-600 uppercase shadow-md animate-fade-in">
+        <div className="md:hidden bg-white dark:bg-slate-900 border-b border-blue-50 dark:border-slate-800 px-6 py-5 flex flex-col gap-4 text-xs font-bold tracking-wider text-gray-600 dark:text-gray-300 uppercase shadow-md animate-fade-in transition-colors duration-300">
           <button
             onClick={() => handleTabNavigation("home")}
-            className={`text-left py-1 hover:text-blue-700 cursor-pointer ${currentTab === "home" ? "text-blue-700 pl-2 border-l-4 border-amber-500" : ""}`}
+            className={`text-left py-1 hover:text-blue-700 dark:hover:text-blue-400 cursor-pointer ${currentTab === "home" ? "text-blue-700 pl-2 border-l-4 border-amber-500" : ""}`}
           >
-            Beranda
+            {lang === "id" ? "Beranda" : "Home"}
           </button>
           
           <button
             onClick={() => handleTabNavigation("tentang")}
-            className={`text-left py-1 hover:text-blue-700 cursor-pointer ${currentTab === "tentang" ? "text-blue-700 pl-2 border-l-4 border-amber-500" : ""}`}
+            className={`text-left py-1 hover:text-blue-700 dark:hover:text-blue-400 cursor-pointer ${currentTab === "tentang" ? "text-blue-700 pl-2 border-l-4 border-amber-500" : ""}`}
           >
-            Tentang Kami
+            {lang === "id" ? "Tentang Kami" : "About Us"}
           </button>
 
           <button
             onClick={() => handleTabNavigation("kegiatan")}
-            className={`text-left py-1 hover:text-blue-700 cursor-pointer ${currentTab === "kegiatan" ? "text-blue-700 pl-2 border-l-4 border-amber-500" : ""}`}
+            className={`text-left py-1 hover:text-blue-700 dark:hover:text-blue-400 cursor-pointer ${currentTab === "kegiatan" ? "text-blue-700 pl-2 border-l-4 border-amber-500" : ""}`}
           >
-            Kegiatan
+            {lang === "id" ? "Kegiatan" : "Activities"}
           </button>
 
           <button
             onClick={() => handleTabNavigation("kontak")}
-            className={`text-left py-1 hover:text-blue-700 cursor-pointer ${currentTab === "kontak" ? "text-blue-700 pl-2 border-l-4 border-amber-500" : ""}`}
+            className={`text-left py-1 hover:text-blue-700 dark:hover:text-blue-400 cursor-pointer ${currentTab === "kontak" ? "text-blue-700 pl-2 border-l-4 border-amber-500" : ""}`}
           >
-            Kontak & Donasi
+            {lang === "id" ? "Kontak & Donasi" : "Contact & Support"}
           </button>
 
-          <div className="border-t pt-3 flex flex-col gap-2">
+          {/* Quick controls in mobile dropdown */}
+          <div className="border-t dark:border-slate-850 pt-4 flex items-center justify-between gap-3 text-xs bg-slate-50 dark:bg-slate-950/40 p-3 rounded-xl">
+            <span className="text-gray-400 uppercase font-semibold">{lang === "id" ? "Bahasa:" : "Language:"}</span>
+            <button
+              onClick={() => setLang(lang === "id" ? "en" : "id")}
+              className="flex items-center gap-1 bg-white dark:bg-slate-900 px-3 py-1.5 border border-slate-200 dark:border-slate-800 rounded-lg text-blue-600 dark:text-blue-400 text-[11px] font-bold"
+            >
+              <Globe className="w-3.5 h-3.5" />
+              {lang === "id" ? "EN (English)" : "ID (Indonesia)"}
+            </button>
+          </div>
+
+          <div className="border-t dark:border-slate-850 pt-2 flex flex-col gap-2">
             <button
               onClick={() => handleTabNavigation("admin")}
               className={`w-full py-2.5 rounded-xl text-center font-extrabold cursor-pointer transition flex items-center justify-center gap-1.5 ${
                 currentTab === "admin"
                   ? "bg-blue-900 text-white"
-                  : "bg-slate-100 text-gray-700 hover:bg-slate-200"
+                  : "bg-slate-100 dark:bg-slate-800 text-gray-700 dark:text-gray-200 hover:bg-slate-200 dark:hover:bg-slate-750"
               }`}
             >
               <Compass className="w-3.5 h-3.5" />
-              Portal Pengurus
+              {lang === "id" ? "Portal Pengurus" : "Staff Portal"}
             </button>
           </div>
         </div>
@@ -285,6 +364,8 @@ export default function App() {
               onNavigate={handleTabNavigation}
               onSelectActivity={handleSelectActivity}
               profil={profil}
+              lang={lang}
+              isDark={isDark}
             />
           )}
 
@@ -293,6 +374,8 @@ export default function App() {
               profil={profil}
               stats={stats}
               pengurus={pengurus}
+              lang={lang}
+              isDark={isDark}
             />
           )}
 
@@ -301,6 +384,8 @@ export default function App() {
               activities={activities}
               selectedActivity={selectedActivity}
               onSelectActivity={setSelectedActivity}
+              lang={lang}
+              isDark={isDark}
             />
           )}
 
@@ -310,6 +395,8 @@ export default function App() {
               rekening={rekening}
               reviews={reviews}
               onUlasanSubmit={loadPublicData}
+              lang={lang}
+              isDark={isDark}
             />
           )}
 
@@ -324,6 +411,8 @@ export default function App() {
                 profilYayasan: profil,
                 ulasan: reviews
               }}
+              lang={lang}
+              isDark={isDark}
             />
           )}
         </motion.div>
@@ -354,7 +443,9 @@ export default function App() {
               <h4 className="font-extrabold text-white tracking-tight">YAYASAN PANTI ASUHAN GELORA KASIH SIBOLANGIT</h4>
             </div>
             <p className="text-gray-300 leading-relaxed max-w-sm">
-              Yayasan Panti Asuhan Kristen Gelora Kasih merupakan lembaga pengasuhan sosial berasas kasih Kristiani, membina masa depan cerah bagi anak yatim, piatu, terlantar secara sah.
+              {lang === "id"
+                ? "Yayasan Panti Asuhan Kristen Gelora Kasih merupakan lembaga pengasuhan sosial berasas kasih Kristiani, membina masa depan cerah bagi anak yatim, piatu, terlantar secara sah."
+                : "The Gelora Kasih Christian Orphanage Foundation is a social care institution founded on Christian love, nurturing a bright future for orphans and neglected children."}
             </p>
             
             {/* Live DB Social Media Icons */}
@@ -397,26 +488,28 @@ export default function App() {
 
           {/* Quick Links Column */}
           <div className="md:col-span-3 space-y-3">
-            <h5 className="font-bold text-white uppercase tracking-wider text-xs border-b pb-1.5 border-white/10">Navigasi Halaman</h5>
+            <h5 className="font-bold text-white uppercase tracking-wider text-xs border-b pb-1.5 border-white/10">
+              {lang === "id" ? "Navigasi Halaman" : "Page Navigation"}
+            </h5>
             <ul className="space-y-2 font-medium text-gray-300 text-[11px]">
               <li>
                 <button onClick={() => handleTabNavigation("home")} className="hover:text-amber-300 transition text-left cursor-pointer">
-                  Beranda Website
+                  {lang === "id" ? "Beranda Website" : "Home Website"}
                 </button>
               </li>
               <li>
                 <button onClick={() => handleTabNavigation("tentang")} className="hover:text-amber-300 transition text-left cursor-pointer">
-                  Visi, Misi & Pengurus
+                  {lang === "id" ? "Visi, Misi & Pengurus" : "Our Vision, Mission & Board"}
                 </button>
               </li>
               <li>
                 <button onClick={() => handleTabNavigation("kegiatan")} className="hover:text-amber-300 transition text-left cursor-pointer">
-                  Aktivitas & Berita Panti
+                  {lang === "id" ? "Aktivitas & Berita Panti" : "Orphanage News & Activities"}
                 </button>
               </li>
               <li>
                 <button onClick={() => handleTabNavigation("kontak")} className="hover:text-amber-300 transition text-left cursor-pointer">
-                  Hubungi Kontak & Donasi
+                  {lang === "id" ? "Hubungi Kontak & Donasi" : "Contact & Donations"}
                 </button>
               </li>
             </ul>
@@ -424,7 +517,9 @@ export default function App() {
 
           {/* Direct Address Column */}
           <div className="md:col-span-4 space-y-3">
-            <h5 className="font-bold text-white uppercase tracking-wider text-xs border-b pb-1.5 border-white/10">Alamat & Kontak</h5>
+            <h5 className="font-bold text-white uppercase tracking-wider text-xs border-b pb-1.5 border-white/10">
+              {lang === "id" ? "Alamat & Kontak" : "Address & Contact"}
+            </h5>
             <div className="space-y-3 font-medium text-gray-300 text-[11px] leading-relaxed">
               <div className="flex gap-2 items-start">
                 <MapPin className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
@@ -439,7 +534,7 @@ export default function App() {
                 <Phone className="w-4 h-4 text-amber-500 shrink-0 group-hover:scale-110 transition-transform" />
                 <span className="flex items-center gap-1.5">
                   {profil.telepon} 
-                  <span className="text-[9px] px-1 px-0.5 bg-emerald-600/20 text-emerald-400 border border-emerald-500/30 rounded font-bold">WA</span>
+                  <span className="text-[9px] px-1 bg-emerald-600/20 text-emerald-400 border border-emerald-500/30 rounded font-bold">WA</span>
                 </span>
               </a>
               <a 
@@ -454,14 +549,14 @@ export default function App() {
         </div>
 
         {/* Outer bottom copyright with discreet CMS entry */}
-        <div className="bg-blue-990/60 py-6 px-6 md:px-12 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center gap-4 text-[10px] text-gray-400 font-semibold uppercase tracking-wider">
-          <span>&copy; {new Date().getFullYear()} Yayasan Panti Asuhan Kristen Gelora Kasih. All Rights Reserved.</span>
+        <div className="bg-blue-995/60 py-6 px-6 md:px-12 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center gap-4 text-[10px] text-gray-400 font-semibold uppercase tracking-wider">
+          <span>&copy; {new Date().getFullYear()} Yayasan Panti Asuhan Kristen Gelora Kasih. {lang === "id" ? "Hak Cipta Dilindungi." : "All Rights Reserved."}</span>
           <div className="flex items-center gap-2">
             <button
               onClick={() => handleTabNavigation("admin")}
               className="text-gray-400 hover:text-amber-400 transition cursor-pointer flex items-center gap-1 bg-white/5 px-2.5 py-1 rounded border border-white/10"
             >
-              <Compass className="w-3.5 h-3.5" /> Portal CMS Internal
+              <Compass className="w-3.5 h-3.5" /> {lang === "id" ? "Portal System Admin Internal" : "Internal System Admin Portal"}
             </button>
           </div>
         </div>

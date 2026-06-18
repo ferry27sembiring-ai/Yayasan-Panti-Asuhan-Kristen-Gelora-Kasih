@@ -21,9 +21,11 @@ interface AdminPanelProps {
     profilYayasan: ProfilYayasan;
     ulasan?: Review[];
   };
+  lang?: "id" | "en";
+  isDark?: boolean;
 }
 
-export default function AdminPanel({ onDataRefresh, publicData }: AdminPanelProps) {
+export default function AdminPanel({ onDataRefresh, publicData, lang = "id", isDark = false }: AdminPanelProps) {
   // Authentication states
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [token, setToken] = useState<string | null>(null);
@@ -687,9 +689,13 @@ export default function AdminPanel({ onDataRefresh, publicData }: AdminPanelProp
             <div className="w-12 h-12 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center mx-auto shadow-sm">
               <Lock className="w-6 h-6" />
             </div>
-            <h2 className="text-2xl font-bold text-gray-900 tracking-tight">GELORA KASIH CMS</h2>
+            <h2 className="text-xl font-bold text-gray-900 tracking-tight text-center uppercase md:text-2xl">
+              {lang === "id" ? "Gelora Kasih System Admin" : "Gelora Kasih System Admin"}
+            </h2>
             <p className="text-xs text-gray-500 max-w-xs mx-auto">
-              Sistem Pengelolaan Konten Terpusat Yayasan Panti Asuhan Gelora Kasih Sibolangit
+              {lang === "id" 
+                ? "Sistem Pengelolaan Konten Terpusat Yayasan Panti Asuhan Kristen Gelora Kasih" 
+                : "Centralized Content Management Administration of Gelora Kasih Christian Orphanage"}
             </p>
           </div>
 
