@@ -35,6 +35,7 @@ export default function AdminPanel({ onDataRefresh, publicData, lang = "id", isD
   const [showPassword, setShowPassword] = useState(false);
   const [loginError, setLoginError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [showPortal, setShowPortal] = useState(false);
   const [showDefaultInfo, setShowDefaultInfo] = useState(false);
   const [isVerifyingSecurity, setIsVerifyingSecurity] = useState(false);
   const [securityCodeInput, setSecurityCodeInput] = useState("");
@@ -697,9 +698,21 @@ export default function AdminPanel({ onDataRefresh, publicData, lang = "id", isD
       <div id="login-layout" className="min-h-[70vh] flex items-center justify-center py-10">
         <div className="w-full max-w-md bg-white p-8 rounded-3xl border border-blue-100 shadow-xl space-y-6">
           <div className="text-center space-y-2">
-            <div className="w-12 h-12 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center mx-auto shadow-sm">
-              <Lock className="w-6 h-6" />
-            </div>
+            <button
+              type="button"
+              onClick={() => {
+                setShowPortal(!showPortal);
+                if (showPortal) {
+                  setShowDefaultInfo(false);
+                  setIsVerifyingSecurity(false);
+                  setIsRequestingByEmail(false);
+                }
+              }}
+              title={lang === "id" ? "Portal Keamanan" : "Security Portal"}
+              className="w-12 h-12 bg-blue-50 text-blue-600 hover:bg-blue-100 hover:text-blue-700 rounded-full flex items-center justify-center mx-auto shadow-xs cursor-pointer select-none transition-all duration-300 active:scale-95 border-none outline-hidden"
+            >
+              <Lock className="w-5 h-5 animate-pulse" />
+            </button>
             <h2 className="text-xl font-bold text-gray-900 tracking-tight text-center uppercase md:text-2xl">
               {lang === "id" ? "Gelora Kasih System Admin" : "Gelora Kasih System Admin"}
             </h2>
@@ -724,24 +737,26 @@ export default function AdminPanel({ onDataRefresh, publicData, lang = "id", isD
               />
             </div>
 
-            <div className="space-y-1 relative">
+            <div className="space-y-1">
               <label className="text-xs font-bold text-gray-600 block">Password</label>
-              <input
-                id="input-password"
-                type={showPassword ? "text" : "password"}
-                placeholder="Masukkan kata sandi..."
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-2.5 text-sm bg-gray-50 border border-gray-200 focus:border-blue-500 rounded-xl focus:outline-hidden transition pr-10"
-                required
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-[32px] text-gray-400 hover:text-gray-600 cursor-pointer"
-              >
-                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-              </button>
+              <div className="relative">
+                <input
+                  id="input-password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Masukkan kata sandi..."
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full px-4 py-2.5 text-sm bg-gray-50 border border-gray-200 focus:border-blue-500 rounded-xl focus:outline-hidden transition pr-10"
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 cursor-pointer flex items-center justify-center p-1"
+                >
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              </div>
             </div>
 
             {loginError && (
@@ -771,7 +786,8 @@ export default function AdminPanel({ onDataRefresh, publicData, lang = "id", isD
             </button>
           </form>
 
-          <div className="text-center text-[11px] text-gray-500 font-medium bg-gray-50 p-4 rounded-xl border border-gray-150 flex flex-col items-center justify-center gap-3 transition-all w-full max-w-md mx-auto shadow-sm">
+          {showPortal && (
+            <div className="text-center text-[11px] text-gray-500 font-medium bg-gray-50 p-4 rounded-xl border border-gray-150 flex flex-col items-center justify-center gap-3 transition-all w-full max-w-sm mx-auto shadow-xs animate-fade-in">
             
             {/* Header Area */}
             <div className="flex items-center justify-between w-full text-xs text-gray-400 font-bold uppercase tracking-wider pb-1.5 border-b border-gray-200/50">
@@ -1045,6 +1061,7 @@ export default function AdminPanel({ onDataRefresh, publicData, lang = "id", isD
               </div>
             )}
           </div>
+          )}
         </div>
       </div>
     );
